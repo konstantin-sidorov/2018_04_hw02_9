@@ -11,13 +11,15 @@ import java.util.List;
 public class DBConnection implements DataBase {
     private final Connection connection;
 
-    public DBConnection() {
+    public DBConnection() throws DataBaseException{
         try {
             //Class.forName("org.h2.Driver");
             DriverManager.registerDriver(new org.h2.Driver());
             connection = DriverManager.getConnection("jdbc:h2:mem:test");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            DataBaseException se = new DataBaseException("connection error");
+            se.initCause(e);
+            throw se;
         }
     }
 
@@ -25,17 +27,17 @@ public class DBConnection implements DataBase {
         return connection;
     }
 
-    public void prepareTables() throws SQLException {
+    public void prepareTables() throws DataBaseException {
 
     }
 
     @Override
-    public <T extends DataSet> void addUsers(List<T> users) throws SQLException  {
+    public <T extends DataSet> void addUsers(List<T> users) throws DataBaseException  {
 
     }
 
     @Override
-    public <T extends DataSet> T loadUser(long id, Class<T> clazz) throws SQLException, IllegalAccessException, InstantiationException {
+    public <T extends DataSet> T loadUser(long id, Class<T> clazz) throws DataBaseException{
         return null;
     }
 
