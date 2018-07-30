@@ -1,17 +1,14 @@
 package ru.otus.db;
 
-
-import ru.otus.DataSet;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 
-public class DBConnection implements DataBase {
+
+public class DBConnection {
     private final Connection connection;
 
-    public DBConnection() throws DataBaseException{
+    public DBConnection() throws DataBaseException {
         try {
             //Class.forName("org.h2.Driver");
             DriverManager.registerDriver(new org.h2.Driver());
@@ -27,21 +24,13 @@ public class DBConnection implements DataBase {
         return connection;
     }
 
-    public void prepareTables() throws DataBaseException {
-
-    }
-
-    @Override
-    public <T extends DataSet> void addUsers(List<T> users) throws DataBaseException  {
-
-    }
-
-    @Override
-    public <T extends DataSet> T loadUser(long id, Class<T> clazz) throws DataBaseException{
-        return null;
-    }
-
-    public void close() throws Exception {
-        connection.close();
+    public void close() throws DataBaseException {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            DataBaseException se = new DataBaseException("close error");
+            se.initCause(e);
+            throw se;
+        }
     }
 }

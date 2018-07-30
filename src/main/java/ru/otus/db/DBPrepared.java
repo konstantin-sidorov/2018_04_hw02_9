@@ -4,15 +4,26 @@ package ru.otus.db;
 import ru.otus.DataSet;
 import ru.otus.UserDataSet;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DBPrepared extends DBConnection {
+public class DBPrepared implements DataBase {
     private static final String CREATE_TABLE_USERS = "create table user(id integer primary key auto_increment,name varchar(255),age integer);";
     private static final String INSERT_INTO_USER = "insert into user (id,name,age) values(?,?,?);";
     private static final String SELECT_USER = "select name,age from user where id=%s;";
+    private final DBConnection connection;
 
     public DBPrepared() throws DataBaseException {
+        connection = new DBConnection();
+    }
+
+    public Connection getConnection() {
+        return connection.getConnection();
+    }
+
+    public void close() throws DataBaseException {
+        connection.close();
     }
 
     @Override
