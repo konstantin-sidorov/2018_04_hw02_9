@@ -1,6 +1,5 @@
 package ru.otus;
 
-import org.junit.Assert;
 import ru.otus.db.*;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Main {
             db.prepareTables();
             db.addUsers(users);
             UserDataSet u3=db.loadUser(1,u1.getClass());
-            Assert.assertEquals(true, u1.equals(u3));
+            //Assert.assertEquals(true, u1.equals(u3));
         } catch (Exception e) {
             DataBaseException se = new DataBaseException("main error");
             se.initCause(e);

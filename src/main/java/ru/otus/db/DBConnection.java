@@ -13,6 +13,7 @@ public class DBConnection {
             //Class.forName("org.h2.Driver");
             DriverManager.registerDriver(new org.h2.Driver());
             connection = DriverManager.getConnection("jdbc:h2:mem:test");
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
             DataBaseException se = new DataBaseException("connection error");
             se.initCause(e);

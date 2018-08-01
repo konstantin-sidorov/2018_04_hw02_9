@@ -2,7 +2,7 @@ package ru.otus.db;
 
 
 import ru.otus.DataSet;
-import ru.otus.UserDataSet;
+import ru.otus.MyObject;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -41,9 +41,10 @@ public class DBPrepared implements DataBase {
                         int age = result.getInt("age");
                         String name = result.getString("name");
                         T res = clazz.newInstance();
-                        res.setId(id);
-                        ((UserDataSet) res).setName(name);
-                        ((UserDataSet) res).setAge(age);
+                        MyObject myUser = new MyObject(res);
+                        myUser.setId(id);
+                        myUser.setName(name);
+                        myUser.setAge(age);
                         return res;
                     } catch (SQLException | InstantiationException | IllegalAccessException e) {
                         DataBaseException se = new DataBaseException("loadUser error");
@@ -58,13 +59,14 @@ public class DBPrepared implements DataBase {
     public <T extends DataSet> void addUsers(List<T> users) throws DataBaseException {
         try {
             Executor exec = new Executor(getConnection());
-            getConnection().setAutoCommit(false);
+            //getConnection().setAutoCommit(false);
             exec.execUpdate(INSERT_INTO_USER, statement -> {
                 for (DataSet user : users) {
+                    MyObject myUser = new MyObject(user);
                     try {
-                        statement.setInt(1, (int) user.getId());
-                        statement.setString(2, ((UserDataSet) user).getName());
-                        statement.setInt(3, ((UserDataSet) user).getAge());
+                        statement.setInt(1, myUser.getId());
+                        statement.setString(2, myUser.getName());
+                        statement.setInt(3, myUser.getAge());
                         statement.execute();
                     } catch (SQLException e) {
                         DataBaseException se = new DataBaseException("addUsers error");
