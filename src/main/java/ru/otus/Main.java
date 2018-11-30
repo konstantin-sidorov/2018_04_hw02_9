@@ -1,9 +1,12 @@
 package ru.otus;
 
-import ru.otus.db.*;
+import ru.otus.db.DBPrepared;
+import ru.otus.db.DataBase;
+import ru.otus.db.DataBaseException;
 
 import java.util.ArrayList;
 import java.util.List;
+import junit.*;
 
 public class Main {
     public static void main(String[] args) throws DataBaseException {
@@ -17,6 +20,7 @@ public class Main {
             db.addUsers(users);
             UserDataSet u3=db.loadUser(1,u1.getClass());
             //Assert.assertEquals(true, u1.equals(u3));
+            System.out.println(""+u3);
         } catch (Exception e) {
             DataBaseException se = new DataBaseException("main error");
             se.initCause(e);
